@@ -77,6 +77,20 @@ To start the stack in production mode:
 docker-compose up -d 
 ```
 
+## Remote connection
+
+Establish an ssh tunnel for the nodered and grafana ports through lyoserv: 
+
+```
+ssh -L 1880:lyovis12:1880 -L 3000:lyovis12:3000 lyoserv
+```
+
+This logs you into lyoserv, keep this connection up. 
+
+Now, ports 1880 and 3000 of your local computer are mapped to the same ports on lyovis12. 
+Just click the links in the next section to access these servers. 
+
+
 ## Accessing the services from the host machine
 
 ### Grafana and Node-red web GUIs

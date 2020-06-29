@@ -77,6 +77,21 @@ To start the stack in production mode:
 docker-compose up -d 
 ```
 
+## Remote connection
+
+Establish an ssh tunnel for the nodered and grafana ports through lyoserv: 
+
+```
+ssh -L 1880:lyovis12:1880 -L 3000:lyovis12:3000 lyoserv
+```
+
+This logs you into lyoserv, keep this connection up. 
+
+Now, ports 1880 and 3000 of your local computer are mapped to the same ports on lyovis12, through an encrypted connection to lyoserv.
+
+Just click the links in the next section to access these servers. 
+
+
 ## Accessing the services from the host machine
 
 ### Grafana and Node-red web GUIs
@@ -128,28 +143,4 @@ Then access:
 You should be able to control the HV module, and to see the results in grafana: 
 
 ![](doc/simple_ui.png)
-
-
-
-## TODO
-
-* think about user interface and access
-* think about global architecture: inputs, outputs, role of mqtt and db, ... 
-* data generator in nodered to mqtt
-* influxDB loader (mqtt listener)
-  * python script? **Telegraf?**
-  * think about topic naming for the loader
-* grafana dashboard to look at the data from influxdb
-  * how to initialize pre-built dashboard?    
-* install nodered modules npm 
-  * ask pavel about the utility of each package
-* test mqtt broker from outside, from inside 
-* set up a mockup test suite? 
-* security: 
-  * grafana: just change password
-  * nodered: how to handle credentials
-  * influxdb: keep it confined - expose? 
-  * mosquitto: keep it confined - securing mosquitto is too painful. 
-* backups: set up a backup procedure for all named volumes in the stack 
-
 

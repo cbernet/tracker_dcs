@@ -7,6 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 COPY dummy/ .
-RUN ls dummy
+COPY sensors/ .
 
 CMD [ "python", "dummy/hv.py", "hv", "mosquitto"]

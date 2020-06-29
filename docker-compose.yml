@@ -16,6 +16,8 @@ services:
       - "3000"
     ports:
       - "3000:3000"
+#    environment:
+#      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
     volumes:
       - grafana:/var/lib/grafana
   nodered:
@@ -35,6 +37,13 @@ services:
       - mosquitto_data:/mosquitto/data
       - mosquitto_log:/mosquitto/log
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+#  dht11:
+#    build: ./trackerdcs
+#    links:
+#      - mosquitto
+#    devices:
+#      - /dev/cu.usbmodem141121
+#    command: ['python', 'sensors/dht11.py', 'mosquitto']
 
 volumes:
   influxdb:

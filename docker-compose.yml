@@ -12,8 +12,6 @@ services:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
   dashboard:
     image: grafana/grafana
-    expose:
-      - "3000"
     ports:
       - "3000:3000"
 #    environment:
@@ -23,27 +21,18 @@ services:
   nodered:
     # image: nodered/node-red
     build: ./node-red
-    expose:
-      - "1880"
     ports:
       - "1880:1880"
     volumes:
       - nodered:/data
   mosquitto:
     image: eclipse-mosquitto
-    expose:
-      - "1883"
+    ports:
+      - "1883:1883"
     volumes:
       - mosquitto_data:/mosquitto/data
       - mosquitto_log:/mosquitto/log
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
-#  dht11:
-#    build: ./trackerdcs
-#    links:
-#      - mosquitto
-#    devices:
-#      - /dev/cu.usbmodem141121
-#    command: ['python', 'sensors/dht11.py', 'mosquitto']
 
 volumes:
   influxdb:

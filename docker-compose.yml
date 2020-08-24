@@ -14,12 +14,9 @@ services:
     image: grafana/grafana
     ports:
       - "3000:3000"
-#    environment:
-#      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
     volumes:
       - grafana:/var/lib/grafana
   nodered:
-    # image: nodered/node-red
     build: ./node-red
     ports:
       - "1880:1880"

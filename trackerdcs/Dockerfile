@@ -9,4 +9,4 @@ COPY . .
 COPY dummy/ .
 COPY sensors/ .
 
-CMD [ "python", "dummy/hv.py", "hv", "mosquitto"]
+# CMD [ "python", "dummy/hv.py", "hv", "mosquitto"]

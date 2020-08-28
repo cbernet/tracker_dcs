@@ -23,11 +23,12 @@ hum_pat = re.compile(r'^Humidity: (\d+.\d+).*')
 
 
 def run(mqtt_host, sensor_name):
+    print(mqtt_host)
     client = mqtt.Client()
     client.connect(mqtt_host, 1883, 60)
     log.info('mqtt connected')
     client.loop_start()
-    with serial.Serial('/dev/cu.usbmodem14311', 9600, timeout=2) as ser:
+    with serial.Serial('/dev/ttyACM0', 9600, timeout=2) as ser:
         while 1:
             line = ser.readline()
             line = line.decode().strip()

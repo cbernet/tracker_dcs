@@ -30,6 +30,13 @@ services:
       - mosquitto_data:/mosquitto/data
       - mosquitto_log:/mosquitto/log
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+  dht_room: 
+    build: ./trackerdcs
+    devices: 
+      - /dev/ttyACM0:/dev/ttyACM0
+    links: 
+      - mosquitto
+    command: ['python', 'sensors/dht.py', 'mosquitto', 'room']
 
 volumes:
   influxdb:

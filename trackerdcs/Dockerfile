@@ -9,4 +9,6 @@ COPY . .
 COPY dummy/ .
 COPY sensors/ .
 
+ENV PYTHONUNBUFFERED 1
+
 # CMD [ "python", "dummy/hv.py", "hv", "mosquitto"]

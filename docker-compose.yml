@@ -1,13 +1,22 @@
 version: "3"
 services:
   influxdb:
-    image: influxdb
+    image: influxdb:2.0
+    restart: always
     expose:
       - "8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=dbuser
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password
+      - DOCKER_INFLUXDB_INIT_ORG=cms-tedd
+      - DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
     volumes:
-      - influxdb:/var/lib/influxdb
+      - influxdb2:/var/lib/influxdb2
+      - ./influxdb/config:/etc/influxdb2
   telegraf:
     image: telegraf
+    restart: always
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
   dashboard:
@@ -23,23 +32,26 @@ services:
     volumes:
       - nodered:/data
   mosquitto:
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:2.0
+    restart: always
     ports:
       - "1883:1883"
+    expose:
+      - "1883"
     volumes:
       - mosquitto_data:/mosquitto/data
       - mosquitto_log:/mosquitto/log
-      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
-  dht_room: 
-    build: ./trackerdcs
-    devices: 
-      - /dev/ttyACM0:/dev/ttyACM0
-    links: 
-      - mosquitto
-    command: ['python', 'sensors/dht.py', 'mosquitto', 'room']
+      - ./mosquitto/config:/mosquitto/config
+#  dht_room:
+#    build: ./trackerdcs
+#    devices:
+#      - /dev/ttyACM0:/dev/ttyACM0
+#    links:
+#      - mosquitto
+#    command: ['python', 'sensors/dht.py', 'mosquitto', 'room']
 
 volumes:
-  influxdb:
+  influxdb2:
   telegraf.conf:
   grafana:
   nodered:

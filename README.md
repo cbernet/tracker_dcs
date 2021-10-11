@@ -82,23 +82,48 @@ I suggest to [install docker-compose with pip](https://docs.docker.com/compose/i
 To start the stack in test mode : 
 
 ```
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.dummy.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.dummy.yml up -d
 ```
 
 This command uses a combination of three docker-compose files : 
 
 * [docker-compose.yml](docker-compose.yml) : production stack
 * [docker-compose.dev.yml](docker-compose.dev.yml) : dev settings, which maps some additional container ports to the host. Don't do that in prod !
-* [docker-compose.dummy.yml](docker-compose.dummy.yml) : dummy modules for tests, which simulate the behaviour of a high-voltage power supply, a low-voltage power supply, and an environmental sensor. 
+* [docker-compose.dummy.yml](docker-compose.dummy.yml) : dummy services for tests, which simulate the behaviour of a high-voltage power supply, a low-voltage power supply, and an environmental sensor. 
 
-**mqtt messages in the test stack:**
+Check the running services: 
+
+```
+docker compose ps 
+```
+
+This should give something like:
+
+```    
+NAME                SERVICE             STATUS              PORTS
+dcs_dashboard_1     dashboard           running             0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
+dcs_hv_1            hv                  running             
+dcs_influxdb_1      influxdb            running             0.0.0.0:8086->8086/tcp, :::8086->8086/tcp
+dcs_lv_1            lv                  running             
+dcs_mosquitto_1     mosquitto           running             0.0.0.0:1883->1883/tcp, :::1883->1883/tcp
+dcs_nodered_1       nodered             running (healthy)   0.0.0.0:1880->1880/tcp, :::1880->1880/tcp
+dcs_sensor_1_1      sensor_1            running             
+dcs_telegraf_1      telegraf            running             8094/tcp, 8125/udp, 8092/udp                                                    
+```
+
+## Dummy services 
 
 The dummy HV and LV services are handled by the same code, [trackerdcs/dummy/hv.py](trackerdcs/dummy/hv.py). 
 
-The service emits `hv/status` with a JSON list as payload with one dictionary element per channel. Here is an example payload in case the HV has only one channel: 
+These services emit to the topics `/hv/status` and `/lv/status` with a JSON list 
+as payload with one dictionary element per channel. 
+
+Here are two example MQTT messages in case the dummy power supplies have only one channel (channel number 0): 
+
 
 ```
-[{"number": 0, "on": 0, "vreq": 37.0}] 
+/hv/status [{"number": 0, "on": 0, "vreq": 0.0}]
+/lv/status [{"number": 0, "on": 0, "vreq": 0.0}]
 ```
 
 * number : channel number 
@@ -109,6 +134,45 @@ The service can be controlled by:
 
 * `/hv/cmd/setv/{channel}` : Set voltage for channel 0. Payload : number.
 * `/hv/cmd/switch/{channel}` : Switch channel on or off. Payload : string (on or off). TODO : not sure this works.
+
+A dummy sensor is emulated with [trackerdcs/dummy/sensor.py](trackerdcs/dummy/sensor.py).
+
+The sensor provides two dummy measurements: 
+
+```
+{"meas1": -0.8171144067699974, "meas2": 0.8171144067699974}
+```
+
+## Communicating with the MQTT service
+
+To listen to all mqtt messages, run this command: 
+
+```
+docker exec dcs_mosquitto_1 mosquitto_sub -t /# -v 
+```
+
+```
+/lv/status [{"number": 0, "on": 0, "vreq": 0.0}]
+/sensor_1/status {"meas1": 0.49454906601977894, "meas2": 0.49454906601977894}
+/hv/status [{"number": 0, "on": 0, "vreq": 0.0}]
+/lv/status [{"number": 0, "on": 0, "vreq": 0.0}]
+/sensor_1/status {"meas1": 0.6576437283934068, "meas2": 0.6576437283934068}
+/hv/status [{"number": 0, "on": 0, "vreq": 0.0}]
+/lv/status [{"number": 0, "on": 0, "vreq": 0.0}]
+/sensor_1/status {"meas1": 0.794404712204754, "meas2": 0.794404712204754}
+...
+```
+
+This command executes mosquitto_sub to subscribe to all topics in verbose mode. 
+The command is executed in the dcs_mosquitto_1 container, in which the command is available.
+
+You can also send mqtt messages : 
+
+```
+docker exec dcs_mosquitto_1 mosquitto_pub -t /hv/cmd/setv/0 -m 100.
+```
+
+Then check that the voltage of the dummy HV has changed with mosquitto_sub. 
 
 
 ## Unittests 

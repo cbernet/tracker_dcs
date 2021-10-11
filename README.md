@@ -218,7 +218,7 @@ At first, you need to set up an InfluxDB datasource like this :
 
 ![](doc/influxdb_data_source.png)
 
-Then, import this [example dashboard](grafana/dashboards/dash_test.json) by copy/pasting the JSON configuration here : 
+Then, import this [example dashboard](grafana/dashboards/dashboard_test.json) by copy/pasting the JSON configuration here : 
 
 ![](doc/grafana_import.png)
 

@@ -30,10 +30,6 @@ class TestInflux(unittest.TestCase):
         except rest.ApiException as err:
             pass
 
-    def test_get_entries(self):
-        """test that the empty table has no points"""
-        self.assertEqual(influx.get_entries(), [])
-
     def test_fill(self):
         """test that one can write a point"""
         temperature = 25

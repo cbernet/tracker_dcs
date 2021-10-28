@@ -26,6 +26,8 @@ class TestDummyHV(unittest.TestCase):
         self.assertTrue(self.hv.channels[0].on)
         self.hv.command('/hv/cmd/switch/0', 'off')
         self.assertFalse(self.hv.channels[0].on)
+        with self.assertRaises(ValueError) as err:
+            self.hv.command('/hv/cmd/switch/0', 'foo')
         voltage = 100
         self.hv.command('/hv/cmd/setv/0', voltage)
         self.assertEqual(self.hv.channels[0].vreq, voltage)

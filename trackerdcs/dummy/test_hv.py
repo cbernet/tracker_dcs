@@ -1,5 +1,5 @@
 import unittest
-from .hv import DummyHV
+from trackerdcs.dummy.hv import DummyHV
 
 
 class TestDummyHV(unittest.TestCase):
@@ -17,22 +17,22 @@ class TestDummyHV(unittest.TestCase):
 
     def test_command(self):
         with self.assertRaises(ValueError) as err:
-            self.hv.command('/hv2/cmd/switch/0', 'on')
+            self.hv.command('/hv2/cmd/switch/0', b'on')
         with self.assertRaises(ValueError) as err:
-            self.hv.command('/hv/cmd/getlost/0', 'on')
+            self.hv.command('/hv/cmd/getlost/0', b'on')
         with self.assertRaises(IndexError) as err:
-            self.hv.command('/hv/cmd/switch/1', 'on')
-        self.hv.command('/hv/cmd/switch/0', 'on')
+            self.hv.command('/hv/cmd/switch/1', b'on')
+        self.hv.command('/hv/cmd/switch/0', b'on')
         self.assertTrue(self.hv.channels[0].on)
-        self.hv.command('/hv/cmd/switch/0', 'off')
+        self.hv.command('/hv/cmd/switch/0', b'off')
         self.assertFalse(self.hv.channels[0].on)
         with self.assertRaises(ValueError) as err:
-            self.hv.command('/hv/cmd/switch/0', 'foo')
+            self.hv.command('/hv/cmd/switch/0', b'foo')
         voltage = 100
         self.hv.command('/hv/cmd/setv/0', voltage)
         self.assertEqual(self.hv.channels[0].vreq, voltage)
         with self.assertRaises(ValueError) as err:
-            self.hv.command('/hv/cmd/setv/0', 'blah')
+            self.hv.command('/hv/cmd/setv/0', b'blah')
 
     def test_status(self):
         self.assertDictEqual(self.hv.status()[0],

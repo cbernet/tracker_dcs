@@ -3,6 +3,9 @@ from dataclasses import dataclass
 import time
 import json
 
+from typing import Union
+
+
 @dataclass
 class Channel(object):
     number: int
@@ -12,11 +15,11 @@ class Channel(object):
 
 class DummyHV(object):
 
-    def __init__(self, name, nchans=1):
-        self.channels = [Channel(i) for i in range(nchans)]
+    def __init__(self, name: str, n_channels: int = 1):
+        self.channels = [Channel(i) for i in range(n_channels)]
         self.name = name
 
-    def command(self, topic, message):
+    def command(self, topic: str, message: Union[bytes, float, int]) -> None:
         device, cmd, command, channel = topic.split('/')[1:]
         if cmd != 'cmd':
             raise ValueError('command messages should be of the form /device/cmd/#')
@@ -25,14 +28,15 @@ class DummyHV(object):
             raise ValueError('wrong hv! ', device, self.name)
         channel = int(channel)
         if command == 'switch':
+            message = message.decode('utf-8')
             if message == 'on':
                 self.channels[channel].on = True
             elif message == 'off':
                 self.channels[channel].on = False
             else:
-                raise ValueError('can only switch on or off')
+                msg = 'can only switch on or off'
+                raise ValueError(msg)
         elif command == 'setv':
-            print('setting vreq', channel, message)
             self.channels[channel].vreq = float(message)
         else:
             raise ValueError('only possible commands are', commands)
@@ -52,7 +56,7 @@ class DummyHV(object):
 def on_connect(client, userdata, flags, rc):
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe('/{}/cmd/#'.format(client.device.name))
+    client.subscribe(f'/{client.device.name}/cmd/#')
 
 
 def on_message(client, userdata, msg):

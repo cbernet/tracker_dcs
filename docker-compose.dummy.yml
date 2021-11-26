@@ -1,17 +1,17 @@
 version: "3"
 services:
   hv:
-    build: ./trackerdcs
+    build: .
     links:
       - mosquitto
     command: ['python', 'dummy/hv.py', 'hv', 'mosquitto']
   lv:
-    build: ./trackerdcs
+    build: .
     links:
       - mosquitto
     command: ['python', 'dummy/hv.py', 'lv', 'mosquitto']
   sensor_1:
-    build: ./trackerdcs
+    build: .
     links:
       - mosquitto
     command: ['python', 'dummy/sensor.py', 'sensor_1', 'mosquitto']

@@ -1,0 +1,710 @@
+[
+    {
+        "id": "1f13f81bdb95ce4d",
+        "type": "tab",
+        "label": "multichannel_flow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c71ca8772b14093c",
+        "type": "debug",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "2c56d4f4582b7f7a",
+        "type": "function",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "func": "var payload=msg.payload; //get payload\nif (payload==\"msg.payload[0].on\"){\n    return [msg,null];\n    \n}\nif (payload==\"msg.payload[0].off\"){\n    return [null,msg];\n    \n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 140,
+        "wires": [
+            [
+                "93d9d7231fe88884",
+                "04102f406eb30f5b"
+            ],
+            [
+                "c71ca8772b14093c"
+            ]
+        ]
+    },
+    {
+        "id": "86b8a5ac2ae23171",
+        "type": "change",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].off",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 320,
+        "y": 120,
+        "wires": [
+            [
+                "2c56d4f4582b7f7a"
+            ]
+        ]
+    },
+    {
+        "id": "737262d2ab50e841",
+        "type": "change",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].on",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 320,
+        "y": 180,
+        "wires": [
+            [
+                "2c56d4f4582b7f7a"
+            ]
+        ]
+    },
+    {
+        "id": "b2d265d2edf2e45d",
+        "type": "mqtt in",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "topic": "/lv/status",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "f5b1ac36.5f63b",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 140,
+        "y": 120,
+        "wires": [
+            [
+                "86b8a5ac2ae23171",
+                "737262d2ab50e841"
+            ]
+        ]
+    },
+    {
+        "id": "0dfdfa67df624574",
+        "type": "mqtt in",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "topic": "/hv/status",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "f5b1ac36.5f63b",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "86b8a5ac2ae23171",
+                "737262d2ab50e841"
+            ]
+        ]
+    },
+    {
+        "id": "0485392c0a0fb6df",
+        "type": "mqtt out",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "topic": "/lv/cmd/switch/0",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f5b1ac36.5f63b",
+        "x": 870,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "f8ab4fb45b07455a",
+        "type": "mqtt out",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "topic": "/hv/cmd/switch/0",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f5b1ac36.5f63b",
+        "x": 870,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "1d0fbe6f531d2de7",
+        "type": "mqtt out",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "topic": "/hv/cmd/setv/0",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f5b1ac36.5f63b",
+        "x": 760,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "152502976fef3f20",
+        "type": "ui_numeric",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "label": "numeric",
+        "tooltip": "",
+        "group": "7d0826bf.201e9",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 560,
+        "y": 640,
+        "wires": [
+            [
+                "1d0fbe6f531d2de7"
+            ]
+        ]
+    },
+    {
+        "id": "cf88916070f40229",
+        "type": "change",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].vreq",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 340,
+        "y": 560,
+        "wires": [
+            [
+                "66d01746013ef66c",
+                "152502976fef3f20",
+                "a883d32e825e2965",
+                "11d7c43fd00c90f0"
+            ]
+        ]
+    },
+    {
+        "id": "e7062b143cf8db9b",
+        "type": "debug",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "4f6abfb61ba5abf9",
+        "type": "mqtt in",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "topic": "/hv/status",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "f5b1ac36.5f63b",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 160,
+        "y": 560,
+        "wires": [
+            [
+                "cf88916070f40229"
+            ]
+        ]
+    },
+    {
+        "id": "66d01746013ef66c",
+        "type": "ui_gauge",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "group": "7d0826bf.201e9",
+        "order": 4,
+        "width": "6",
+        "height": "3",
+        "gtype": "gage",
+        "title": "HV (V)",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 550,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "a883d32e825e2965",
+        "type": "ui_chart",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "group": "7d0826bf.201e9",
+        "order": 10,
+        "width": "0",
+        "height": "0",
+        "label": "",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": true,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 550,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cd206f4aabce033a",
+        "type": "change",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].vreq",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 340,
+        "y": 480,
+        "wires": [
+            [
+                "1d078ee7cbd4ed9b",
+                "a6eb65ae7de8dfa2",
+                "f43195ef91742d57",
+                "9f75df8e3a062915"
+            ]
+        ]
+    },
+    {
+        "id": "cca5c94bccaa5c58",
+        "type": "mqtt out",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "topic": "/lv/cmd/setv/0",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f5b1ac36.5f63b",
+        "x": 760,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "d2f4d0f81977654b",
+        "type": "mqtt in",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "topic": "/lv/status",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "f5b1ac36.5f63b",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 160,
+        "y": 480,
+        "wires": [
+            [
+                "cd206f4aabce033a"
+            ]
+        ]
+    },
+    {
+        "id": "1d078ee7cbd4ed9b",
+        "type": "ui_gauge",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "group": "453b130aa9ddfbad",
+        "order": 3,
+        "width": "6",
+        "height": "3",
+        "gtype": "gage",
+        "title": "LV (V)",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "25",
+        "seg2": "50",
+        "className": "",
+        "x": 550,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "a6eb65ae7de8dfa2",
+        "type": "ui_numeric",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "label": "numeric",
+        "tooltip": "",
+        "group": "453b130aa9ddfbad",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 560,
+        "y": 440,
+        "wires": [
+            [
+                "cca5c94bccaa5c58"
+            ]
+        ]
+    },
+    {
+        "id": "f43195ef91742d57",
+        "type": "ui_chart",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "group": "453b130aa9ddfbad",
+        "order": 9,
+        "width": "0",
+        "height": "0",
+        "label": "",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": true,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 550,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "93d9d7231fe88884",
+        "type": "ui_switch",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "label": "ON/OFF",
+        "tooltip": "",
+        "group": "453b130aa9ddfbad",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "decouple": "false",
+        "topic": "payload",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "on",
+        "onvalueType": "str",
+        "onicon": "power_settings_new",
+        "oncolor": "green",
+        "offvalue": "off",
+        "offvalueType": "str",
+        "officon": "power_settings_new",
+        "offcolor": "red",
+        "animate": true,
+        "className": "",
+        "x": 680,
+        "y": 100,
+        "wires": [
+            [
+                "0485392c0a0fb6df"
+            ]
+        ]
+    },
+    {
+        "id": "9f75df8e3a062915",
+        "type": "ui_slider",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "label": "slider",
+        "tooltip": "",
+        "group": "453b130aa9ddfbad",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 480,
+        "wires": [
+            [
+                "cca5c94bccaa5c58",
+                "e7062b143cf8db9b"
+            ]
+        ]
+    },
+    {
+        "id": "04102f406eb30f5b",
+        "type": "ui_switch",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "label": "ON/OFF",
+        "tooltip": "",
+        "group": "7d0826bf.201e9",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "payload",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "on",
+        "onvalueType": "str",
+        "onicon": "power_settings_new",
+        "oncolor": "green",
+        "offvalue": "off",
+        "offvalueType": "str",
+        "officon": "power_settings_new",
+        "offcolor": "red",
+        "animate": true,
+        "className": "",
+        "x": 680,
+        "y": 160,
+        "wires": [
+            [
+                "f8ab4fb45b07455a"
+            ]
+        ]
+    },
+    {
+        "id": "11d7c43fd00c90f0",
+        "type": "ui_slider",
+        "z": "1f13f81bdb95ce4d",
+        "name": "",
+        "label": "slider",
+        "tooltip": "",
+        "group": "7d0826bf.201e9",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 580,
+        "wires": [
+            [
+                "1d0fbe6f531d2de7",
+                "e7062b143cf8db9b"
+            ]
+        ]
+    },
+    {
+        "id": "f5b1ac36.5f63b",
+        "type": "mqtt-broker",
+        "name": "MQTT",
+        "broker": "mosquitto",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": 4,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "7d0826bf.201e9",
+        "type": "ui_group",
+        "name": "High Voltage ",
+        "tab": "48b344b7.f0736c",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "453b130aa9ddfbad",
+        "type": "ui_group",
+        "name": "Low Voltage",
+        "tab": "48b344b7.f0736c",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "48b344b7.f0736c",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

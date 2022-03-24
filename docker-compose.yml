@@ -49,6 +49,17 @@ services:
 #    links:
 #      - mosquitto
 #    command: ['python', 'sensors/dht.py', 'mosquitto', 'room']
+  low_volt:
+    image: centos:test_dcs_lv1
+    restart: always
+    stdin_open: true #docker run -i
+    tty: true #docker run -t
+    ports:
+      - "4000:4000"
+    expose:
+      - "4000"
+    volumes:
+      - low_voltage:/usr/app/low_voltage_packages/
 
 volumes:
   influxdb2:
@@ -58,5 +69,6 @@ volumes:
   mosquitto_data:
   mosquitto_log:
   mosquitto.conf:
+  low_voltage:
 
   

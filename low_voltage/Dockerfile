@@ -1,5 +1,5 @@
-#FROM  --platform=linux/amd64 centos:centos7 #for mac M1 : choose linux/amd64
-FROM  centos:centos7
+FROM  --platform=linux/amd64 centos:centos7 
+#FROM  centos:centos7
 #CMD uname -m
 
 WORKDIR /usr/app
@@ -14,7 +14,6 @@ RUN python3 -m pip install -U PyVISA-py PyVISA
 #======for python2=============================//
 #RUN yum install -y python-pip
 #RUN pip install --upgrade 
-#install the PyVISA-py PyVISA package via pip
 #RUN pip install PyVISA-py PyVISA
 #==============================================//
 
@@ -45,9 +44,10 @@ RUN yum install -y libusb
 RUN yum install -y libivivisa0
 RUN yum install -y ni-icp.noarch
 RUN yum install -y ni-visa
-RUN yum install -y kernel-devel
 RUN yum install -y ni-daqmx
-
+RUN yum install -y kernel-devel
 
 COPY requirements.txt ./
 RUN python3 -m pip install --no-cache-dir -r requirements.txt
+COPY low_voltage/hmp.py .
+

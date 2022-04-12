@@ -1,11 +1,11 @@
-FROM  --platform=linux/amd64 centos:centos7 
-#FROM  centos:centos7
+#FROM  --platform=linux/amd64 centos:centos7 
+FROM  centos:centos7
 #CMD uname -m
 
 WORKDIR /usr/app
 
 RUN yum update -y
-RUN yum install -y epel-release
+#RUN yum install -y epel-release
 RUN yum install -y python3
 
 RUN python3 -m pip install --upgrade
@@ -28,7 +28,8 @@ RUN yum install -y unzip
 WORKDIR /usr/app/low_voltage_packages/
 
 #===rpm and zip packages (provided by Pierre) are in driver directory====//
-COPY low_voltage/driver . 
+#COPY low_voltage/driver . 
+COPY driver ./ 
 
 ##===install the rsvisa-centos_5.12.1-1.x86_64.rpm package==============//
 RUN rpm -ivh --nodeps rsvisa-centos_5.12.1-1.x86_64.rpm
@@ -47,7 +48,8 @@ RUN yum install -y ni-visa
 RUN yum install -y ni-daqmx
 RUN yum install -y kernel-devel
 
-COPY requirements.txt ./
+COPY ../requirements.txt ./
 RUN python3 -m pip install --no-cache-dir -r requirements.txt
-COPY low_voltage/hmp.py .
+#COPY low_voltage/hmp.py .
+COPY hmp.py ./
 

@@ -12,7 +12,7 @@ services:
   mosquitto:
     ports:
       - "1883:1883"
-  low_volt:
-    ports:
-      - "4000:4000"
+  #low_volt:
+  #  ports:
+  #    - "4000:4000"
 

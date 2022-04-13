@@ -48,7 +48,7 @@ RUN yum install -y ni-visa
 RUN yum install -y ni-daqmx
 RUN yum install -y kernel-devel
 
-COPY ../requirements.txt ./
+COPY requirements.txt ./
 RUN python3 -m pip install --no-cache-dir -r requirements.txt
 #COPY low_voltage/hmp.py .
 COPY hmp.py ./

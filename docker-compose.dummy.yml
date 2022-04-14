@@ -15,11 +15,11 @@ services:
     links:
       - mosquitto
     command: ['python', 'dummy/sensor.py', 'sensor_1', 'mosquitto']
-  #LV:
+  #lw_volt:
   #  build: .
   #  links:
   #    - mosquitto
-  #  command: ['python', 'LowVoltage/HMP4040.py', 'LV', 'mosquitto']
+  #  command: ['python', 'low_voltage/hmp.py', 'lw_volt', 'mosquitto']
  
 
 

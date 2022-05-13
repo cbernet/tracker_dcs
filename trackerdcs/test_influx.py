@@ -8,7 +8,7 @@ bucket = "my-bucket"
 org = 'cms-tedd'
 # TODO : from config file
 client = InfluxDBClient(url="http://localhost:8086",
-                        token="bWt05eYbDNNi1inKouIfs8R-EyAgL8VMhWfRBgw3ScgNiV1iXIwGyV4DajMLu-jhZNHnAJc7qfu4yeG3sf1o0g==",
+                        token="NBXDxMCP9VWJ_CTe2AmDIZK4c6qGB1JQw_-1Jyp6GOBqTNi2kbeQXWJIEdMPyTIESVxepfLdpg6SAHg7lP4-cA==",
                         org=org)
 query_api = client.query_api()
 write_api = client.write_api(write_options=SYNCHRONOUS)

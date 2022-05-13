@@ -50,7 +50,7 @@ services:
 #      - mosquitto
 #    command: ['python', 'sensors/dht.py', 'mosquitto', 'room']
   lv_hmp4040:
-    image: centos:test_dcs_lv_hmp4040
+    # image: centos:test_dcs_lv_hmp4040
     build: ./low_voltage
     restart: always
     stdin_open: true #docker run -i
@@ -61,6 +61,19 @@ services:
     #  - "4000"
     volumes:
       - low_voltage:/usr/app/low_voltage_packages/
+  web_server:
+    build: ./web_server
+    restart: always
+    # port must be open even in production as it's a webserver open to outside
+    # TODO: setup authentication
+    environment:
+      - APP_USER=colin
+      - APP_PASSWORD=test
+    ports:
+      - "8001:8000"
+    command: ["uvicorn", "web_server.app:app", "--host", "0.0.0.0"]
+
+
 
 volumes:
   influxdb2:

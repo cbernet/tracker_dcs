@@ -45,7 +45,7 @@ See the docker-compose stack, the web_server is already integrated.
 To make a request to the root path: 
 
 ```commandline
-curl curl localhost:8001/
+curl localhost:8001/
 ```
 
 
